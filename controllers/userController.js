@@ -1,6 +1,5 @@
-const fs = require('fs');
+const fs = require("fs")
 
-// baca data dari file json
 const users = JSON.parse(
   fs.readFileSync(
     `${__dirname}/../dev-data/data/users.json`
@@ -37,8 +36,6 @@ const getUserById = (req, res) => {
 }
 
 const createUser = (req, res) => {
-  console.log(req.body.role)
-  // generate id untuk data baru dari request api kita
   const newId = users[users.length - 1]._id + 1
   const newData = Object.assign(
     { id: newId },
@@ -96,15 +93,12 @@ const editUser = (req, res) => {
 }
 
 const removeUser = (req, res) => {
-  // konversi string jadi number
   const id = req.params.id
 
-  // cari index dari data yg sesuai id di req.params
   const userIndex = users.findIndex(
     (el) => el._id === id
   )
 
-  // validasi kalau data yg sesuai req.params.id nya gak ada
   if (userIndex === -1) {
     return res.status(404).json({
       status: "failed",
@@ -112,10 +106,8 @@ const removeUser = (req, res) => {
     })
   }
 
-  // proses mengahpus data sesuai index array nya => req.params.id
   users.splice(userIndex, 1)
 
-  // proses update di file json nya
   fs.writeFile(
     `${__dirname}/dev-data/data/users.json`,
     JSON.stringify(users),
@@ -134,5 +126,5 @@ module.exports = {
   getUserById,
   createUser,
   removeUser,
-  editUser
+  editUser,
 }
