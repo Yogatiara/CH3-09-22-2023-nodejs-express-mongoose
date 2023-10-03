@@ -1,6 +1,10 @@
-const mongoose = require("mongoose")
+const dotenv = require("dotenv");
+dotenv.config;
 
-const database = "mongodb://127.0.0.1:27017/tours"
+const mongoose = require("mongoose");
+
+const database =
+  "mongodb://127.0.0.1:27017/tours";
 
 const db = mongoose
   .connect(database, {
@@ -8,6 +12,6 @@ const db = mongoose
   })
   .then(() =>
     console.log("Succes connect to database")
-  )
+  );
 
-module.exports = db
+module.exports = db;

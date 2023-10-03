@@ -7,6 +7,7 @@ const morgan = require("morgan");
 // OUR OWN PACKAGE/MODULE
 const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
+const adminRouter = require("./routes/admin");
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(express.static(`${__dirname}/public`));
 //   )
 //   next()
 // })
+
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -43,5 +47,6 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/dashboard", adminRouter);
 
 module.exports = app;

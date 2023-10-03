@@ -7,39 +7,25 @@ const tours = JSON.parse(
   )
 );
 
-// const checkId = (req, res, next, val) => {
-//   const tour = tours.find(
-//     (el) => el.id === val * 1
-//   );
-
-//   if (!tour) {
-//     return res.status(404).json({
-//       status: "failed",
-//       message: `data with ${val} this not found`,
-//     });
-//   }
-//   next();
-// };
-
-const getAllTours = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    requestTime: req.requestTime,
-    data: {
-      tours,
-    },
-  });
-};
-
 const getAllToursModel = async (req, res) => {
   try {
     const tours = await tourModel.find();
-    res.status(200).json({
-      status: "Succes",
-      requestTime: req.requestTime,
-      data: {
-        tours,
-      },
+    res.render("tours/index.ejs", {
+      tours,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const createPage = async (req, res) => {
+  try {
+    const tours = await tourModel.find();
+    res.render("tours/index.ejs", {
+      tours,
     });
   } catch (err) {
     res.status(400).json({
@@ -80,30 +66,6 @@ const getTourByIdModel = async (req, res) => {
       message: err.message,
     });
   }
-};
-
-const createTour = (req, res) => {
-  console.log(req.body.role);
-  const newId = tours[tours.length - 1].id + 1;
-  const newData = Object.assign(
-    { id: newId },
-    req.body
-  );
-
-  tours.push(newData);
-  fs.writeFile(
-    `${__dirname}/dev-data/data/tours-simple.json`,
-    JSON.stringify(tours),
-    (err) => {
-      // 201 = CREATED
-      res.status(201).json({
-        status: "success",
-        data: {
-          tour: newData,
-        },
-      });
-    }
-  );
 };
 
 const createTourModel = async (req, res) => {
@@ -242,9 +204,8 @@ const removeTourModel = async (req, res) => {
 };
 
 module.exports = {
-  getAllTours,
+  // getAllTours,
   getTourById,
-  createTour,
   removeTour,
   editTour,
   // checkBody,
@@ -253,5 +214,6 @@ module.exports = {
   getTourByIdModel,
   editTourModel,
   removeTourModel,
+  createPage,
   // checkId,
 };
